@@ -19,8 +19,8 @@ test('new ship is not sunk',()=>{
     expect(oneLengthShip.isSunk.toBe(false))
 })
 test('ship over max length',()=>{
-    except(()=> {const illegalShip = new ship(5)}).toThrow()
+    expect(()=> {const illegalShip = new ship(5)}).toThrow()
 })
 test('ship with floaring point length',()=>{
-    except(()=> {const illegalShip = new ship(2.5)}).toThrow()
+    expect(()=> {const illegalShip = new ship(2.5)}).toThrow()
 })
