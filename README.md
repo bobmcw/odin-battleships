@@ -1,1 +1,1 @@
-# web-template
+a battleships game you can play in your browser against AI or other player by passing the laptop
