@@ -1,5 +1,17 @@
 import { ship } from "../src/ship";
 
+let oneLengthShip
+let twoLengthShip 
+let threeLengthShip
+let fourlengthShip 
+
+describe('create ships',()=>{
+    oneLengthShip = new ship(1)
+    twoLengthShip = new ship(2)
+    threeLengthShip = new ship(3)
+    fourlengthShip = new ship(4)
+})
+
 beforeEach(()=>{
     let oneLengthShip = new ship(1)
     let twoLengthShip = new ship(2)
