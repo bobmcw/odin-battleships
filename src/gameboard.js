@@ -1,7 +1,5 @@
 import { ship } from "./ship";
 
-export class gameBoard{
-    constructor(){
-        
-    }
+export class gameBoard {
+  constructor() {}
 }
