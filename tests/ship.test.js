@@ -13,10 +13,10 @@ describe('create ships',()=>{
 })
 
 beforeEach(()=>{
-    let oneLengthShip = new ship(1)
-    let twoLengthShip = new ship(2)
-    let threeLengthShip = new ship(3)
-    let fourlengthShip = new ship(4)
+    oneLengthShip = new ship(1)
+    twoLengthShip = new ship(2)
+    threeLengthShip = new ship(3)
+    fourlengthShip = new ship(4)
 })
 
 test('ship sinking',()=>{
