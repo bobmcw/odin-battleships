@@ -35,5 +35,11 @@ test("board should always have 64 spaces",()=>{
 })
 test("placing a ship",()=>{
     board.placeShip(['a1','a2'])
-    expect(board.getBoard([board.translateCoordinates('a1')]) === board.getBoard([board.translateCoordinates('a2')])).toBe(true)
+    expect(board.getAt('a1')) === board.getBoard([board.getAt('a2')]).toBe(true)
+})
+test("placing too long of a ship",()=>{
+    expect(()=> board.placeShip(['b1','b2','b3','b4','b5'])).toThrow()
+})
+test("repeating coordinates when placing",()=>{
+    expect(()=> board.placeShip(['b1','b1','bs1','b2','b3'])).toThrow()
 })
