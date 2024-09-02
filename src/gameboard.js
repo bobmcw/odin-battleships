@@ -2,10 +2,7 @@ import { ship } from "./ship";
 
 export class gameBoard {
   constructor() {
-    this.board = []
-    for(let i =0;i<64;i++){
-        this.board.push(i)
-    }
+    this.board = Array(64)
     this.numOfOneLengthShips = 1
     this.numOfTwoLengthShips = 1
     this.numOfThreeLengthShips = 1
@@ -35,5 +32,11 @@ export class gameBoard {
   }
   placeShip(){
 
+  }
+  getBoard(){
+    return this.board
+  }
+  getAt(coordinate){
+    return this.getBoard[this.translateCoordinates(coordinate)]
   }
 }
