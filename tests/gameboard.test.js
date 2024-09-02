@@ -1,4 +1,5 @@
 import { gameBoard } from "../src/gameboard";
+import { ship } from "../src/ship";
 
 let board
 describe("creating a gameboard",()=>{
@@ -28,4 +29,11 @@ test("row out of range",()=>{
 })
 test("invalid coordinate format",()=>{
     expect(() => board.translateCoordinates('abc2')).toThrow()
+})
+test("board should always have 64 spaces",()=>{
+    expect(board.getBoard().length).toBe(64)
+})
+test("placing a ship",()=>{
+    board.placeShip(['a1','a2'])
+    expect(board.getBoard([board.translateCoordinates('a1')]) === board.getBoard([board.translateCoordinates('a2')])).toBe(true)
 })
