@@ -36,6 +36,18 @@ export class gameBoard {
       throw new Error("input data must be an array")
     }
     const shipToPlace = new ship(coordinateArr.length)
+    const converted = []
+    coordinateArr.forEach(element => {
+      converted.push(this.translateCoordinates(element)) 
+    });
+    console.log(converted)
+    for(let i=1;i<=converted.length-1;i++){
+      if(Math.abs(converted[i] - converted[i-1]) != 8){ 
+        if(Math.abs(converted[i] - converted[i-1]) != 1){
+          throw new Error("ship is not connected")
+        }
+      }
+    }
     coordinateArr.forEach(coordinate => {
      this.board[this.translateCoordinates(coordinate)] = shipToPlace
     });
