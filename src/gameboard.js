@@ -1,4 +1,5 @@
-import { ship } from "./ship";
+import { sharing } from "webpack";
+import { ship, } from "./ship";
 
 export class gameBoard {
   constructor() {
@@ -30,8 +31,14 @@ export class gameBoard {
     }
     return (coordinate[1]-1)*8 + dict[coordinate[0]]
   }
-  placeShip(){
-
+  placeShip(coordinateArr){
+    if(!Array.isArray(coordinateArr)|| coordinateArr.length === 0){
+      throw new Error("input data must be an array")
+    }
+    const shipToPlace = new ship(coordinateArr.length)
+    coordinateArr.forEach(coordinate => {
+     this.board[this.translateCoordinates(coordinate)] = shipToPlace
+    });
   }
   getBoard(){
     return this.board

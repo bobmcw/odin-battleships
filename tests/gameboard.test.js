@@ -35,11 +35,20 @@ test("board should always have 64 spaces",()=>{
 })
 test("placing a ship",()=>{
     board.placeShip(['a1','a2'])
-    expect(board.getAt('a1')) === board.getBoard([board.getAt('a2')]).toBe(true)
+    expect(board.getAt('a1') === board.getAt('a2')).toBe(true)
 })
 test("placing too long of a ship",()=>{
     expect(()=> board.placeShip(['b1','b2','b3','b4','b5'])).toThrow()
 })
 test("repeating coordinates when placing",()=>{
     expect(()=> board.placeShip(['b1','b1','bs1','b2','b3'])).toThrow()
+})
+test("ships parts should be connected",()=>{
+    expect(()=> board.placeShip(['d1','e4','b3'])).toThrow()
+})
+test("ship can't be a square",()=>{
+    expect(()=> board.placeShip(['d5','d6','e5','e6'])).toThrow()
+})
+test("empty array",()=>{
+    expect(()=> board.placeShip([])).toThrow()
 })
