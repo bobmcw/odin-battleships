@@ -8,6 +8,7 @@ export class gameBoard {
     this.numOfTwoLengthShips = 1
     this.numOfThreeLengthShips = 1
     this.numOfFourLengthShips = 1
+    this.missedShots = []
   }
   translateCoordinates(coordinate){
     const dict = {
@@ -55,7 +56,18 @@ export class gameBoard {
     return this.board
   }
   getAt(coordinate){
-    return this.getBoard[this.translateCoordinates(coordinate)]
+    return this.getBoard()[this.translateCoordinates(coordinate)]
+  }
+  reciveAttack(coordinate){
+    if (this.missedShots.includes(coordinate)){
+      throw new Error('this space was already shot')
+    }
+    this.missedShots.push(coordinate)
+    if(this.getAt(coordinate) === undefined){
+      return false
+    }
+    this.getAt(coordinate).hit()
+    return true
   }
 
 }
