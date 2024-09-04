@@ -55,3 +55,13 @@ test("empty array",()=>{
 test("placing an L spahed ship",()=>{
     expect(() => board.placeShip(['d4','d5','d6','e6'])).not.toThrow()
 })
+test("hitting a ship",()=>{
+    expect(board.reciveAttack('a1')).toBe(true)
+})
+test("can't attack same space twice",()=>{
+    expect(()=> board.reciveAttack('a1')).toThrow()
+})
+test("sinking a ship",()=>{
+    board.reciveAttack('a2')
+    expect(board.getAt('a1').isSunk()).toBe(true)
+})

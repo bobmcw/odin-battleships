@@ -40,7 +40,6 @@ export class gameBoard {
     coordinateArr.forEach(element => {
       converted.push(this.translateCoordinates(element)) 
     });
-    console.log(converted)
     for(let i=1;i<=converted.length-1;i++){
       if(Math.abs(converted[i] - converted[i-1]) != 8){ 
         if(Math.abs(converted[i] - converted[i-1]) != 1){
@@ -58,4 +57,5 @@ export class gameBoard {
   getAt(coordinate){
     return this.getBoard[this.translateCoordinates(coordinate)]
   }
+
 }
