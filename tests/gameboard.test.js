@@ -52,3 +52,6 @@ test("ship can't be a square",()=>{
 test("empty array",()=>{
     expect(()=> board.placeShip([])).toThrow()
 })
+test("placing an L spahed ship",()=>{
+    expect(() => board.placeShip(['d4','d5','d6','e6'])).not.toThrow()
+})
