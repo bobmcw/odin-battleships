@@ -87,7 +87,6 @@ export class gameBoard {
         ship.hit()
       }
     });
-    console.log(this.placedShips)
   }
 
 }
