@@ -1,5 +1,4 @@
-import { gameBoard } from "../src/gameboard";
-import { ship } from "../src/ship";
+import { gameBoard } from "../src/gameboard.js";
 
 let board
 describe("creating a gameboard",()=>{

@@ -1,4 +1,4 @@
-import { player } from "../src/player";
+import { player } from "../src/player.js";
 
 let testPlayer
 describe("creating a player",()=>{

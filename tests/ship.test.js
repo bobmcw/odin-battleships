@@ -1,4 +1,4 @@
-import { ship } from "../src/ship";
+import { ship } from "../src/ship.js";
 
 let oneLengthShip;
 let twoLengthShip;

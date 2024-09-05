@@ -1,5 +1,4 @@
-import { sharing } from "webpack";
-import { ship, } from "./ship";
+import { ship, } from "./ship.js"
 
 export class gameBoard {
   constructor() {
