@@ -9,6 +9,7 @@ export class gameBoard {
     this.numOfThreeLengthShips = 1
     this.numOfFourLengthShips = 1
     this.missedShots = []
+    this.placedShips = []
   }
   translateCoordinates(coordinate){
     const dict = {
@@ -51,6 +52,7 @@ export class gameBoard {
     coordinateArr.forEach(coordinate => {
      this.board[this.translateCoordinates(coordinate)] = shipToPlace
     });
+    this.placedShips.push(shipToPlace)
   }
   getBoard(){
     return this.board
@@ -68,6 +70,24 @@ export class gameBoard {
     }
     this.getAt(coordinate).hit()
     return true
+  }
+  areAllShipsSunken(){
+    let temp
+    this.placedShips.forEach(ship => {
+     if(!ship.isSunk()){
+      temp = false
+     }
+    });
+    if(temp === false){return false}
+    return true
+  }
+  sinkAll(){
+    this.placedShips.forEach(ship => {
+      while(!ship.isSunk()){
+        ship.hit()
+      }
+    });
+    console.log(this.placedShips)
   }
 
 }
