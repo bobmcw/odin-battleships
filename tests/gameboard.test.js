@@ -65,3 +65,10 @@ test("sinking a ship",()=>{
     board.reciveAttack('a2')
     expect(board.getAt('a1').isSunk()).toBe(true)
 })
+test("check if all ships are sunk",()=>{
+    expect(board.areAllShipsSunken()).toBe(false)
+})
+test("check if all ships sunk after sunking them all",()=>{
+    board.sinkAll()
+    expect(board.areAllShipsSunken()).toBe(true)
+})
