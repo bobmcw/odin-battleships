@@ -2,7 +2,7 @@ import { ship, } from "./ship.js"
 
 export class gameBoard {
   constructor() {
-    this.board = Array(64)
+    this.board = Array.apply(null,Array(64))
     this.numOfOneLengthShips = 1
     this.numOfTwoLengthShips = 1
     this.numOfThreeLengthShips = 1
