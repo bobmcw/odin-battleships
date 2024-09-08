@@ -21,6 +21,12 @@ class DOMMethods{
     switchPlayer(){
         this.activePlayer === this.player1 ? this.activePlayer = this.player2 : this.activePlayer = this.player1
     }
+    startGame(){
+
+    }
+    placeShips(){
+
+    }
 }
 const player1 = new player
 player1.placeShip(['a1','a2','a3'])
