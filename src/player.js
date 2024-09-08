@@ -7,6 +7,9 @@ export class player{
     getBoard(){
         return this.gameboard.getBoard()
     }
+    placeShip(coordinatArr){
+        this.gameboard.placeShip(coordinatArr)
+    }
 }
 export class AI extends player{
     constructor(){
