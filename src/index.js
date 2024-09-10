@@ -6,14 +6,24 @@ class GameController {
     this.player1 = player1;
     this.player2 = player2;
     this.activePlayer = player1;
+    this.boardTemplate = document.querySelector(".board");
   }
   drawBoard(player) {
-    const boardContainer = document.querySelector(".board");
-    boardContainer.innerHTML = "";
+    let boardContainer = document.querySelector(".board");
+    boardContainer = this.boardTemplate;
     let coordinate = 0;
+    let rowNum = 1;
     player.getBoard().forEach((space) => {
       const dict = ["a", "b", "c", "d", "e", "f", "g", "h"];
       const tile = document.createElement("div");
+      //adding a row number to the board
+      if (coordinate % 8 === 0) {
+        const row = document.createElement("h1");
+        row.innerText = rowNum;
+        row.classList.add("num");
+        rowNum += 1;
+        boardContainer.appendChild(row);
+      }
       tile.value = coordinate;
       coordinate += 1;
       tile.classList.add("tile");
