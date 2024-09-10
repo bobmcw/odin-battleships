@@ -42,3 +42,7 @@ body {
   align-self: center;
   text-align: center;
 }
+
+.shot{
+    background-color: red;
+}

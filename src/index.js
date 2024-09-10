@@ -7,6 +7,7 @@ class GameController {
     this.player2 = player2;
     this.activePlayer = player1;
     this.boardTemplate = document.querySelector(".board");
+    this.spacesAlreadyShot = [];
   }
   drawBoard(player) {
     let boardContainer = document.querySelector(".board");
@@ -29,12 +30,14 @@ class GameController {
       tile.classList.add("tile");
       tile.innerText = space;
       tile.addEventListener("click", () => {
-        console.log(tile.value);
         let cord = "";
         cord += dict[tile.value % 8];
         cord += Math.trunc(tile.value / 8) + 1;
-        console.log(cord);
-        this.activePlayer.gameboard.reciveAttack(cord);
+        if (!this.spacesAlreadyShot.includes(cord)) {
+          tile.classList.add("shot");
+          this.activePlayer.gameboard.reciveAttack(cord);
+          this.spacesAlreadyShot.push(cord);
+        }
       });
       boardContainer.appendChild(tile);
     });
