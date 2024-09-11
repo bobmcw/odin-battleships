@@ -96,4 +96,5 @@ const game = new GameController(player1, player2);
 const pvp = document.querySelector('#pvp')
 pvp.addEventListener('click',()=>{
 game.drawBoard(player1);
+pvp.innerHTML = ''
 })
