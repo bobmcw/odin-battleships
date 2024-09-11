@@ -77,6 +77,8 @@ class GameController {
     this.activePlayer === this.player1
       ? (this.activePlayer = this.player2)
       : (this.activePlayer = this.player1);
+      const header = document.querySelector('.header')
+      header.innerText = `${this.activePlayer.name}'s board`
   }
   startGame() {}
   placeShips() {}
