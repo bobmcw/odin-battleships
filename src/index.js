@@ -46,7 +46,7 @@ class GameController {
             if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
               console.log("sunk");
               if(this.activePlayer.gameboard.areAllShipsSunken()){
-                alert(`${this.activePlayer} won!`)
+                alert(`${this.activePlayer.name} won!`)
               }
             }
           }
@@ -66,8 +66,8 @@ class GameController {
   placeShips() {}
   turn() {}
 }
-const player1 = new player();
+const player1 = new player("player1");
 player1.placeShip(["a1", "a2", "a3"]);
-const player2 = new player();
+const player2 = new player("player2");
 const game = new GameController(player1, player2);
 game.drawBoard(player1);
