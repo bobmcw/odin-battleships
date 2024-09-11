@@ -3,10 +3,6 @@ import { ship } from "./ship.js";
 export class gameBoard {
   constructor() {
     this.board = Array.apply(null, Array(64));
-    this.numOfOneLengthShips = 1;
-    this.numOfTwoLengthShips = 1;
-    this.numOfThreeLengthShips = 1;
-    this.numOfFourLengthShips = 1;
     this.missedShots = [];
     this.placedShips = [];
   }
