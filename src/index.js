@@ -66,9 +66,11 @@ class GameController {
           }
           else{
           spacesAlreadyShot.push(cord);
+          setTimeout(() => {  
           this.switchPlayer();
           boardContainer = this.boardTemplate;
           this.drawBoard(this.activePlayer);
+          }, 1000);
           }
         }
       });
@@ -91,4 +93,7 @@ const player1 = new player("player1");
 player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
+const pvp = document.querySelector('#pvp')
+pvp.addEventListener('click',()=>{
 game.drawBoard(player1);
+})
