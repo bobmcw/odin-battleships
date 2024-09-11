@@ -39,14 +39,16 @@ class GameController {
         cord += dict[tile.value % 8];
         cord += Math.trunc(tile.value / 8) + 1;
         if (!this.spacesAlreadyShot.includes(cord)) {
-          tile.classList.add("shot");
           tile.innerHTML = circle;
           if (this.activePlayer.gameboard.reciveAttack(cord)) {
             console.log("hit");
-            tile.innerHTML = cross
-          if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
-            console.log("sunk");
-          }
+            tile.innerHTML = cross;
+            if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
+              console.log("sunk");
+              if(this.activePlayer.gameboard.areAllShipsSunken()){
+                alert(`${this.activePlayer} won!`)
+              }
+            }
           }
           this.spacesAlreadyShot.push(cord);
         }
