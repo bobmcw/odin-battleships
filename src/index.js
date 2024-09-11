@@ -35,7 +35,12 @@ class GameController {
         cord += Math.trunc(tile.value / 8) + 1;
         if (!this.spacesAlreadyShot.includes(cord)) {
           tile.classList.add("shot");
-          this.activePlayer.gameboard.reciveAttack(cord);
+          if(this.activePlayer.gameboard.reciveAttack(cord)){
+            console.log('hit')
+          }
+          if(this.activePlayer.gameboard.getAt(cord).isSunk()){
+            console.log("sunk")
+          }
           this.spacesAlreadyShot.push(cord);
         }
       });
