@@ -55,6 +55,7 @@ class GameController {
           tile.innerHTML = circle;
           if (this.activePlayer.gameboard.reciveAttack(cord)) {
             console.log("hit");
+          spacesAlreadyShot.push(cord);
             tile.innerHTML = cross;
             if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
               console.log("sunk");
@@ -63,10 +64,12 @@ class GameController {
               }
             }
           }
+          else{
           spacesAlreadyShot.push(cord);
           this.switchPlayer();
           boardContainer = this.boardTemplate;
           this.drawBoard(this.activePlayer);
+          }
         }
       });
       boardContainer.appendChild(tile);
