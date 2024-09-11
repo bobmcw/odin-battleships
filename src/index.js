@@ -12,9 +12,12 @@ class GameController {
     this.player2 = player2;
     this.activePlayer = player1;
     this.boardTemplate = document.querySelector(".board");
-    this.spacesAlreadyShot = [];
+    this.spacesAlreadyShotForPlayer1 = [];
+    this.spacesAlreadyShotForPlayer2 = [];
   }
   drawBoard(player) {
+    let spacesAlreadyShot
+    this.activePlayer === this.player1 ? spacesAlreadyShot = this.spacesAlreadyShotForPlayer1 : spacesAlreadyShot = this.spacesAlreadyShotForPlayer2
     let boardContainer = document.querySelector(".board");
     boardContainer = this.boardTemplate;
     let coordinate = 0;
@@ -38,7 +41,7 @@ class GameController {
         let cord = "";
         cord += dict[tile.value % 8];
         cord += Math.trunc(tile.value / 8) + 1;
-        if (!this.spacesAlreadyShot.includes(cord)) {
+        if (!spacesAlreadyShot.includes(cord)) {
           tile.innerHTML = circle;
           if (this.activePlayer.gameboard.reciveAttack(cord)) {
             console.log("hit");
@@ -50,7 +53,10 @@ class GameController {
               }
             }
           }
-          this.spacesAlreadyShot.push(cord);
+          spacesAlreadyShot.push(cord);
+          this.switchPlayer()
+          boardContainer.innerHTML = ""
+          this.drawBoard(this.activePlayer)
         }
       });
       boardContainer.appendChild(tile);
