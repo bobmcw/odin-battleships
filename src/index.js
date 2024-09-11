@@ -11,15 +11,17 @@ class GameController {
     this.player1 = player1;
     this.player2 = player2;
     this.activePlayer = player1;
-    this.boardTemplate = document.querySelector(".board");
+    this.boardTemplate = document.querySelector(".board").innerHTML;
     this.spacesAlreadyShotForPlayer1 = [];
     this.spacesAlreadyShotForPlayer2 = [];
   }
   drawBoard(player) {
-    let spacesAlreadyShot
-    this.activePlayer === this.player1 ? spacesAlreadyShot = this.spacesAlreadyShotForPlayer1 : spacesAlreadyShot = this.spacesAlreadyShotForPlayer2
+    let spacesAlreadyShot;
+    this.activePlayer === this.player1
+      ? (spacesAlreadyShot = this.spacesAlreadyShotForPlayer1)
+      : (spacesAlreadyShot = this.spacesAlreadyShotForPlayer2);
     let boardContainer = document.querySelector(".board");
-    boardContainer = this.boardTemplate;
+    boardContainer.innerHTML = this.boardTemplate;
     let coordinate = 0;
     let rowNum = 1;
     player.getBoard().forEach((space) => {
@@ -37,10 +39,18 @@ class GameController {
       coordinate += 1;
       tile.classList.add("tile");
       tile.innerText = space;
+      let cord = "";
+      cord += dict[tile.value % 8];
+      cord += Math.trunc(tile.value / 8) + 1;
+      if (spacesAlreadyShot.includes(cord)) {
+        if (this.activePlayer.gameboard.getAt(cord) !== undefined) {
+          tile.innerHTML = cross;
+        } else {
+          tile.innerHTML = circle;
+        }
+      }
+
       tile.addEventListener("click", () => {
-        let cord = "";
-        cord += dict[tile.value % 8];
-        cord += Math.trunc(tile.value / 8) + 1;
         if (!spacesAlreadyShot.includes(cord)) {
           tile.innerHTML = circle;
           if (this.activePlayer.gameboard.reciveAttack(cord)) {
@@ -48,15 +58,15 @@ class GameController {
             tile.innerHTML = cross;
             if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
               console.log("sunk");
-              if(this.activePlayer.gameboard.areAllShipsSunken()){
-                alert(`${this.activePlayer.name} won!`)
+              if (this.activePlayer.gameboard.areAllShipsSunken()) {
+                alert(`${this.activePlayer.name} won!`);
               }
             }
           }
           spacesAlreadyShot.push(cord);
-          this.switchPlayer()
-          boardContainer.innerHTML = ""
-          this.drawBoard(this.activePlayer)
+          this.switchPlayer();
+          boardContainer = this.boardTemplate;
+          this.drawBoard(this.activePlayer);
         }
       });
       boardContainer.appendChild(tile);
