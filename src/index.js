@@ -1,4 +1,5 @@
 import { player } from "./player.js";
+import { ship } from "./ship.js";
 import "./style.css";
 
 const circle =
@@ -15,7 +16,7 @@ class GameController {
     this.spacesAlreadyShotForPlayer1 = [];
     this.spacesAlreadyShotForPlayer2 = [];
   }
-  drawBoard(player) {
+  drawBoard(player,isForPlacing=false) {
     let spacesAlreadyShot;
     this.activePlayer === this.player1
       ? (spacesAlreadyShot = this.spacesAlreadyShotForPlayer1)
@@ -49,6 +50,7 @@ class GameController {
           tile.innerHTML = circle;
         }
       }
+      if(!isForPlacing){
 
       tile.addEventListener("click", () => {
         if (!spacesAlreadyShot.includes(cord)) {
@@ -74,6 +76,7 @@ class GameController {
           }
         }
       });
+    }
       boardContainer.appendChild(tile);
     });
   }
@@ -86,13 +89,27 @@ class GameController {
       header.innerText = `${this.activePlayer.name}'s board`
   }
   startGame() {}
-  placeShips() {}
+  placeShips() {
+    this.drawBoard(this.player1,true)
+    const container = document.querySelector('.container')
+    const fourLengthShip = document.createElement('div')
+    fourLengthShip.classList.add('ship')
+    fourLengthShip.setAttribute('draggable',true)
+    fourLengthShip.addEventListener('dragstart',()=>{})
+    for(let i=0;i<4;i++){
+        const shipPart = document.createElement('div')
+        shipPart.classList.add('shipPart')
+        fourLengthShip.appendChild(shipPart)
+    }
+    container.appendChild(fourLengthShip)
+  }
   turn() {}
 }
 const player1 = new player("player1");
-player1.placeShip(["a1", "a2", "a3"]);
+//player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
+game.placeShips()
 const pvp = document.querySelector('#pvp')
 pvp.addEventListener('click',()=>{
 game.drawBoard(player1);
