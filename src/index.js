@@ -87,9 +87,9 @@ class GameController {
     header.innerText = `${this.activePlayer.name}'s board`;
   }
   startGame() {}
-  placeShip(shipsLength) {
+  placeShip(shipsLength,player) {
     //create a draggable ship
-    this.drawBoard(this.player1, true);
+    this.drawBoard(player, true);
     const container = document.querySelector(".container");
     const shipToPlace = document.createElement("div");
     shipToPlace.classList.add("ship");
@@ -99,6 +99,26 @@ class GameController {
       shipPart.classList.add("shipPart");
       shipToPlace.appendChild(shipPart);
     }
+    const rotateButton = document.createElement('button')
+    rotateButton.innerText = "rotate"
+    //these are to prevent hitboxes spanning too many lanes / files
+    let hitboxFactorX = 0.85
+    let hitboxFactorY = 0.01
+    rotateButton.addEventListener('click',()=>{
+        let currentOrientation = window.getComputedStyle(shipToPlace).getPropertyValue("flex-direction")
+        console.log(currentOrientation)
+        if(currentOrientation === "row"){
+            shipToPlace.style.flexDirection = "column"
+            hitboxFactorX = 0.01
+            hitboxFactorY = 0.85
+        }
+        else{
+            shipToPlace.style.flexDirection === "row"
+            hitboxFactorX = 0.85
+            hitboxFactorY = 0.01
+        }
+    })
+    container.appendChild(rotateButton)
     const tiles = document.querySelectorAll(".tile");
 
     //handle droping on tiles
@@ -137,9 +157,9 @@ class GameController {
       e.preventDefault();
       const dragHitbox = {
         left: e.clientX - offsetX,
-        right: e.clientX - offsetX + shipToPlace.offsetWidth * 0.85,
+        right: e.clientX - offsetX + shipToPlace.offsetWidth * hitboxFactorX,
         top: e.clientY - offsetY,
-        bottom: e.clientY - offsetY + shipToPlace.offsetHeight * 0.01,
+        bottom: e.clientY - offsetY + shipToPlace.offsetHeight * hitboxFactorY,
       };
       tiles.forEach((tile) => {
         const tileDimension = tile.getBoundingClientRect();
@@ -163,7 +183,7 @@ const player1 = new player("player1");
 //player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
-game.placeShip(3);
+game.placeShip(3,game.player1);
 const pvp = document.querySelector("#pvp");
 pvp.addEventListener("click", () => {
   game.drawBoard(player1);
