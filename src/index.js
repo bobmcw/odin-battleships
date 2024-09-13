@@ -116,16 +116,16 @@ class GameController {
     fourLengthShip.addEventListener('drag',(e)=>{
         const dragHitbox = {
             left: e.clientX - offsetX,
-            right: e.clientX - offsetX + fourLengthShip.offsetWidth,
+            right: e.clientX - offsetX + fourLengthShip.offsetWidth * 0.85,
             top: e.clientY - offsetY,
-            bottom: e.clientY - offsetY + fourLengthShip.offsetHeight
+            bottom: e.clientY - offsetY + fourLengthShip.offsetHeight * 0.01
         }
         tiles.forEach(tile => {
             const tileDimension = tile.getBoundingClientRect()
             if (
-                dragHitbox.left < tileDimension.right &&
+                dragHitbox.left < tileDimension.right-4 &&
                 dragHitbox.right > tileDimension.left &&
-                dragHitbox.top < tileDimension.bottom &&
+                dragHitbox.top < tileDimension.bottom-5 &&
                 dragHitbox.bottom > tileDimension.top
             ){
                 tile.classList.add('dragedOver')
