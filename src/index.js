@@ -16,7 +16,7 @@ class GameController {
     this.spacesAlreadyShotForPlayer1 = [];
     this.spacesAlreadyShotForPlayer2 = [];
   }
-  drawBoard(player,isForPlacing=false) {
+  drawBoard(player, isForPlacing = false) {
     let spacesAlreadyShot;
     this.activePlayer === this.player1
       ? (spacesAlreadyShot = this.spacesAlreadyShotForPlayer1)
@@ -50,32 +50,31 @@ class GameController {
           tile.innerHTML = circle;
         }
       }
-      if(!isForPlacing){
-      tile.addEventListener("click", () => {
-        if (!spacesAlreadyShot.includes(cord)) {
-          tile.innerHTML = circle;
-          if (this.activePlayer.gameboard.reciveAttack(cord)) {
-            console.log("hit");
-          spacesAlreadyShot.push(cord);
-            tile.innerHTML = cross;
-            if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
-              console.log("sunk");
-              if (this.activePlayer.gameboard.areAllShipsSunken()) {
-                alert(`${this.activePlayer.name} won!`);
+      if (!isForPlacing) {
+        tile.addEventListener("click", () => {
+          if (!spacesAlreadyShot.includes(cord)) {
+            tile.innerHTML = circle;
+            if (this.activePlayer.gameboard.reciveAttack(cord)) {
+              console.log("hit");
+              spacesAlreadyShot.push(cord);
+              tile.innerHTML = cross;
+              if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
+                console.log("sunk");
+                if (this.activePlayer.gameboard.areAllShipsSunken()) {
+                  alert(`${this.activePlayer.name} won!`);
+                }
               }
+            } else {
+              spacesAlreadyShot.push(cord);
+              setTimeout(() => {
+                this.switchPlayer();
+                boardContainer = this.boardTemplate;
+                this.drawBoard(this.activePlayer);
+              }, 1000);
             }
           }
-          else{
-          spacesAlreadyShot.push(cord);
-          setTimeout(() => {  
-          this.switchPlayer();
-          boardContainer = this.boardTemplate;
-          this.drawBoard(this.activePlayer);
-          }, 1000);
-          }
-        }
-      });
-    }
+        });
+      }
       boardContainer.appendChild(tile);
     });
   }
@@ -84,58 +83,73 @@ class GameController {
     this.activePlayer === this.player1
       ? (this.activePlayer = this.player2)
       : (this.activePlayer = this.player1);
-      const header = document.querySelector('.header')
-      header.innerText = `${this.activePlayer.name}'s board`
+    const header = document.querySelector(".header");
+    header.innerText = `${this.activePlayer.name}'s board`;
   }
   startGame() {}
   placeShips() {
-    this.drawBoard(this.player1,true)
-    const container = document.querySelector('.container')
-    const fourLengthShip = document.createElement('div')
-    fourLengthShip.classList.add('ship')
-    fourLengthShip.setAttribute('draggable',true)
-    for(let i=0;i<4;i++){
-        const shipPart = document.createElement('div')
-        shipPart.classList.add('shipPart')
-        fourLengthShip.appendChild(shipPart)
+    this.drawBoard(this.player1, true);
+    const container = document.querySelector(".container");
+    const fourLengthShip = document.createElement("div");
+    fourLengthShip.classList.add("ship");
+    fourLengthShip.setAttribute("draggable", true);
+    for (let i = 0; i < 4; i++) {
+      const shipPart = document.createElement("div");
+      shipPart.classList.add("shipPart");
+      fourLengthShip.appendChild(shipPart);
     }
     //TODO
     //calculate the difference between where the user grabbed the ship and ex. left upper corner
     //then use mouse position instead of ships DOMRect to find which tiles the ship overlaps
-    const tiles = document.querySelectorAll('.tile')
+    const tiles = document.querySelectorAll(".tile");
+
+    tiles.forEach((tile) => {
+      tile.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+      tile.addEventListener("drop", (e) => {
+        e.preventDefault();
+        const selected = document.querySelectorAll(".dragedOver");
+        console.log(selected);
+        if (selected.length === 4) {
+          fourLengthShip.innerHTML = "";
+        }
+      });
+    });
 
     //detecting when dragging over a tile
-    let offsetX = 0
-    let offsetY = 0
-    let shipDimentions
-    fourLengthShip.addEventListener('dragstart',(e)=>{
-        shipDimentions = fourLengthShip.getBoundingClientRect()
-        offsetX = e.clientX - shipDimentions.left
-        offsetY = e.clientY - shipDimentions.top
-    })
-    fourLengthShip.addEventListener('drag',(e)=>{
-        const dragHitbox = {
-            left: e.clientX - offsetX,
-            right: e.clientX - offsetX + fourLengthShip.offsetWidth * 0.85,
-            top: e.clientY - offsetY,
-            bottom: e.clientY - offsetY + fourLengthShip.offsetHeight * 0.01
+    let offsetX = 0;
+    let offsetY = 0;
+    let shipDimentions;
+    fourLengthShip.addEventListener("dragstart", (e) => {
+      shipDimentions = fourLengthShip.getBoundingClientRect();
+      offsetX = e.clientX - shipDimentions.left;
+      offsetY = e.clientY - shipDimentions.top;
+    });
+    fourLengthShip.addEventListener("drag", (e) => {
+      e.preventDefault();
+      const dragHitbox = {
+        left: e.clientX - offsetX,
+        right: e.clientX - offsetX + fourLengthShip.offsetWidth * 0.85,
+        top: e.clientY - offsetY,
+        bottom: e.clientY - offsetY + fourLengthShip.offsetHeight * 0.01,
+      };
+      tiles.forEach((tile) => {
+        const tileDimension = tile.getBoundingClientRect();
+        if (
+          dragHitbox.left < tileDimension.right - 4 &&
+          dragHitbox.right > tileDimension.left &&
+          dragHitbox.top < tileDimension.bottom - 5 &&
+          dragHitbox.bottom > tileDimension.top
+        ) {
+          tile.classList.add("dragedOver");
+        } else {
+          tile.classList.remove("dragedOver");
         }
-        tiles.forEach(tile => {
-            const tileDimension = tile.getBoundingClientRect()
-            if (
-                dragHitbox.left < tileDimension.right-4 &&
-                dragHitbox.right > tileDimension.left &&
-                dragHitbox.top < tileDimension.bottom-5 &&
-                dragHitbox.bottom > tileDimension.top
-            ){
-                tile.classList.add('dragedOver')
-            }
-            else{
-                tile.classList.remove('dragedOver')
-            }
-        });
-    })
-    container.appendChild(fourLengthShip)
+      });
+    });
+    fourLengthShip.addEventListener("dragend", (e) => {});
+    container.appendChild(fourLengthShip);
   }
   turn() {}
 }
@@ -143,9 +157,9 @@ const player1 = new player("player1");
 //player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
-game.placeShips()
-const pvp = document.querySelector('#pvp')
-pvp.addEventListener('click',()=>{
-game.drawBoard(player1);
-pvp.innerHTML = ''
-})
+game.placeShips();
+const pvp = document.querySelector("#pvp");
+pvp.addEventListener("click", () => {
+  game.drawBoard(player1);
+  pvp.innerHTML = "";
+});
