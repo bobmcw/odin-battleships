@@ -86,6 +86,13 @@ class GameController {
     const header = document.querySelector(".header");
     header.innerText = `${this.activePlayer.name}'s board`;
   }
+  translateCoordinate(number){
+      const dict = ["a", "b", "c", "d", "e", "f", "g", "h"];
+      let cord = "";
+      cord += dict[number % 8];
+      cord += Math.trunc(number / 8) + 1;
+      return cord
+  }
   startGame() {}
   placeShip(shipsLength,player) {
     //create a draggable ship
@@ -113,7 +120,7 @@ class GameController {
             hitboxFactorY = 0.85
         }
         else{
-            shipToPlace.style.flexDirection === "row"
+            shipToPlace.style.flexDirection = "row"
             hitboxFactorX = 0.85
             hitboxFactorY = 0.01
         }
@@ -130,11 +137,15 @@ class GameController {
         e.preventDefault();
         const selected = document.querySelectorAll(".dragedOver");
         console.log(selected);
+        const selectedTiles = []
         if (selected.length === shipsLength) {
           shipToPlace.innerHTML = "";
           selected.forEach(element => {
             element.classList.add('placedShip')
+            selectedTiles.push(this.translateCoordinate(element.value))
           });
+          console.log(selectedTiles)
+          player.placeShip(selectedTiles)
         }
         else{
             selected.forEach(element => {
