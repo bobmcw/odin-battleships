@@ -114,6 +114,11 @@ class GameController {
         if (selected.length === 4) {
           fourLengthShip.innerHTML = "";
         }
+        else{
+            selected.forEach(element => {
+                element.classList.remove('dragedOver')
+            });
+        }
       });
     });
 
