@@ -62,3 +62,6 @@ svg{
     display: flex;
     flex-direction: row;
 }
+.dragedOver{
+    background-color: red;
+}

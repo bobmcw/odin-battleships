@@ -51,7 +51,6 @@ class GameController {
         }
       }
       if(!isForPlacing){
-
       tile.addEventListener("click", () => {
         if (!spacesAlreadyShot.includes(cord)) {
           tile.innerHTML = circle;
@@ -95,12 +94,47 @@ class GameController {
     const fourLengthShip = document.createElement('div')
     fourLengthShip.classList.add('ship')
     fourLengthShip.setAttribute('draggable',true)
-    fourLengthShip.addEventListener('dragstart',()=>{})
     for(let i=0;i<4;i++){
         const shipPart = document.createElement('div')
         shipPart.classList.add('shipPart')
         fourLengthShip.appendChild(shipPart)
     }
+    //TODO
+    //calculate the difference between where the user grabbed the ship and ex. left upper corner
+    //then use mouse position instead of ships DOMRect to find which tiles the ship overlaps
+    const tiles = document.querySelectorAll('.tile')
+
+    //detecting when dragging over a tile
+    let offsetX = 0
+    let offsetY = 0
+    let shipDimentions
+    fourLengthShip.addEventListener('dragstart',(e)=>{
+        shipDimentions = fourLengthShip.getBoundingClientRect()
+        offsetX = e.clientX - shipDimentions.left
+        offsetY = e.clientY - shipDimentions.top
+    })
+    fourLengthShip.addEventListener('drag',(e)=>{
+        const dragHitbox = {
+            left: e.clientX - offsetX,
+            right: e.clientX - offsetX + fourLengthShip.offsetWidth,
+            top: e.clientY - offsetY,
+            bottom: e.clientY - offsetY + fourLengthShip.offsetHeight
+        }
+        tiles.forEach(tile => {
+            const tileDimension = tile.getBoundingClientRect()
+            if (
+                dragHitbox.left < tileDimension.right &&
+                dragHitbox.right > tileDimension.left &&
+                dragHitbox.top < tileDimension.bottom &&
+                dragHitbox.bottom > tileDimension.top
+            ){
+                tile.classList.add('dragedOver')
+            }
+            else{
+                tile.classList.remove('dragedOver')
+            }
+        });
+    })
     container.appendChild(fourLengthShip)
   }
   turn() {}
