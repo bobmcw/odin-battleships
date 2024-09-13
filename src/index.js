@@ -87,17 +87,17 @@ class GameController {
     header.innerText = `${this.activePlayer.name}'s board`;
   }
   startGame() {}
-  placeShips() {
+  placeShip(shipsLength) {
     //create a draggable ship
     this.drawBoard(this.player1, true);
     const container = document.querySelector(".container");
-    const fourLengthShip = document.createElement("div");
-    fourLengthShip.classList.add("ship");
-    fourLengthShip.setAttribute("draggable", true);
-    for (let i = 0; i < 4; i++) {
+    const shipToPlace = document.createElement("div");
+    shipToPlace.classList.add("ship");
+    shipToPlace.setAttribute("draggable", true);
+    for (let i = 0; i < shipsLength; i++) {
       const shipPart = document.createElement("div");
       shipPart.classList.add("shipPart");
-      fourLengthShip.appendChild(shipPart);
+      shipToPlace.appendChild(shipPart);
     }
     const tiles = document.querySelectorAll(".tile");
 
@@ -110,8 +110,8 @@ class GameController {
         e.preventDefault();
         const selected = document.querySelectorAll(".dragedOver");
         console.log(selected);
-        if (selected.length === 4) {
-          fourLengthShip.innerHTML = "";
+        if (selected.length === shipsLength) {
+          shipToPlace.innerHTML = "";
           selected.forEach(element => {
             element.classList.add('placedShip')
           });
@@ -128,18 +128,18 @@ class GameController {
     let offsetX = 0;
     let offsetY = 0;
     let shipDimentions;
-    fourLengthShip.addEventListener("dragstart", (e) => {
-      shipDimentions = fourLengthShip.getBoundingClientRect();
+    shipToPlace.addEventListener("dragstart", (e) => {
+      shipDimentions = shipToPlace.getBoundingClientRect();
       offsetX = e.clientX - shipDimentions.left;
       offsetY = e.clientY - shipDimentions.top;
     });
-    fourLengthShip.addEventListener("drag", (e) => {
+    shipToPlace.addEventListener("drag", (e) => {
       e.preventDefault();
       const dragHitbox = {
         left: e.clientX - offsetX,
-        right: e.clientX - offsetX + fourLengthShip.offsetWidth * 0.85,
+        right: e.clientX - offsetX + shipToPlace.offsetWidth * 0.85,
         top: e.clientY - offsetY,
-        bottom: e.clientY - offsetY + fourLengthShip.offsetHeight * 0.01,
+        bottom: e.clientY - offsetY + shipToPlace.offsetHeight * 0.01,
       };
       tiles.forEach((tile) => {
         const tileDimension = tile.getBoundingClientRect();
@@ -155,7 +155,7 @@ class GameController {
         }
       });
     });
-    container.appendChild(fourLengthShip);
+    container.appendChild(shipToPlace);
   }
   turn() {}
 }
@@ -163,7 +163,7 @@ const player1 = new player("player1");
 //player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
-game.placeShips();
+game.placeShip(3);
 const pvp = document.querySelector("#pvp");
 pvp.addEventListener("click", () => {
   game.drawBoard(player1);
