@@ -88,6 +88,7 @@ class GameController {
   }
   startGame() {}
   placeShips() {
+    //create a draggable ship
     this.drawBoard(this.player1, true);
     const container = document.querySelector(".container");
     const fourLengthShip = document.createElement("div");
@@ -100,6 +101,7 @@ class GameController {
     }
     const tiles = document.querySelectorAll(".tile");
 
+    //handle droping on tiles
     tiles.forEach((tile) => {
       tile.addEventListener("dragover", (e) => {
         e.preventDefault();
@@ -153,7 +155,6 @@ class GameController {
         }
       });
     });
-    fourLengthShip.addEventListener("dragend", (e) => {});
     container.appendChild(fourLengthShip);
   }
   turn() {}
