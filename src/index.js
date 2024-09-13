@@ -98,9 +98,6 @@ class GameController {
       shipPart.classList.add("shipPart");
       fourLengthShip.appendChild(shipPart);
     }
-    //TODO
-    //calculate the difference between where the user grabbed the ship and ex. left upper corner
-    //then use mouse position instead of ships DOMRect to find which tiles the ship overlaps
     const tiles = document.querySelectorAll(".tile");
 
     tiles.forEach((tile) => {
@@ -113,6 +110,9 @@ class GameController {
         console.log(selected);
         if (selected.length === 4) {
           fourLengthShip.innerHTML = "";
+          selected.forEach(element => {
+            element.classList.add('placedShip')
+          });
         }
         else{
             selected.forEach(element => {
