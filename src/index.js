@@ -94,7 +94,7 @@ class GameController {
       return cord
   }
   startGame() {}
-  placeShip(player,shipQueue = [4,3,3,2]) {
+  placeShip(player,shipQueue = [4,3,3,2],invalidTiles = []) {
     //create a draggable ship
     this.drawBoard(player, true);
     const container = document.querySelector(".container");
@@ -128,6 +128,23 @@ class GameController {
     container.appendChild(rotateButton)
     const tiles = document.querySelectorAll(".tile");
 
+    function CalculateInvalid(nums){
+        const result = [...nums]
+        nums.forEach(element => {
+            result.push(element + 8)
+            result.push(element - 8)
+        });
+        //check if ship is on the left edge
+        if(nums[0] % 8 !== 0){
+            result.push(nums[0]-1)
+        }
+        //check if ship is on the right edge
+        if(nums[nums.length-1] % 8 !== 7){
+            result.push(nums[nums.length-1]+1)
+        }
+        return result
+    }
+
     //handle droping on tiles
     tiles.forEach((tile) => {
       tile.addEventListener("dragover", (e) => {
@@ -136,19 +153,27 @@ class GameController {
       tile.addEventListener("drop", (e) => {
         e.preventDefault();
         const selected = document.querySelectorAll(".dragedOver");
-        console.log(selected);
         const selectedTiles = []
-        if (selected.length === shipQueue[0]) {
+        const selectedNumbers = []
+        let validPosition = true
+        selected.forEach(tile => {
+            if(invalidTiles.includes(tile.value)){
+                validPosition = false
+            }
+        });
+        if (selected.length === shipQueue[0] && validPosition) {
           shipToPlace.innerHTML = "";
           selected.forEach(element => {
+            selectedNumbers.push(element.value)
             element.classList.add('placedShip')
             selectedTiles.push(this.translateCoordinate(element.value))
           });
-          console.log(selectedTiles)
+        const newInvalid = CalculateInvalid(selectedNumbers)
+        invalidTiles = invalidTiles.concat(newInvalid)
           player.placeShip(selectedTiles)
           shipQueue.shift()
           rotateButton.innerHTML = ""
-          this.placeShip(player,shipQueue)
+          this.placeShip(player,shipQueue,invalidTiles)
         }
         else{
             selected.forEach(element => {
