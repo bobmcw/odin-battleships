@@ -15,6 +15,7 @@ class GameController {
     this.boardTemplate = document.querySelector(".board").innerHTML;
     this.spacesAlreadyShotForPlayer1 = [];
     this.spacesAlreadyShotForPlayer2 = [];
+    this.setupDone = false;
   }
   drawBoard(player, isForPlacing = false) {
     let spacesAlreadyShot;
@@ -95,6 +96,17 @@ class GameController {
   }
   startGame() {}
   placeShip(player, shipQueue = [4, 3, 3, 2], invalidTiles = []) {
+    if (shipQueue.length === 0) {
+      if (!this.setupDone) {
+        this.switchPlayer();
+        this.placeShip(this.player2);
+        this.setupDone = true;
+      } else {
+        this.switchPlayer();
+        this.drawBoard(this.player1);
+      }
+      return;
+    }
     //create a draggable ship
     this.drawBoard(player, true);
     const container = document.querySelector(".container");
@@ -226,15 +238,15 @@ class GameController {
     });
     container.appendChild(shipToPlace);
   }
-  turn() {}
+  Setup() {
+    this.placeShip(this.activePlayer);
+  }
 }
 const player1 = new player("player1");
-//player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
-game.placeShip(game.player1);
 const pvp = document.querySelector("#pvp");
 pvp.addEventListener("click", () => {
-  game.drawBoard(player1);
+  game.placeShip(game.player1);
   pvp.innerHTML = "";
 });
