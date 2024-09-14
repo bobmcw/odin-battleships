@@ -86,15 +86,15 @@ class GameController {
     const header = document.querySelector(".header");
     header.innerText = `${this.activePlayer.name}'s board`;
   }
-  translateCoordinate(number){
-      const dict = ["a", "b", "c", "d", "e", "f", "g", "h"];
-      let cord = "";
-      cord += dict[number % 8];
-      cord += Math.trunc(number / 8) + 1;
-      return cord
+  translateCoordinate(number) {
+    const dict = ["a", "b", "c", "d", "e", "f", "g", "h"];
+    let cord = "";
+    cord += dict[number % 8];
+    cord += Math.trunc(number / 8) + 1;
+    return cord;
   }
   startGame() {}
-  placeShip(player,shipQueue = [4,3,3,2],invalidTiles = []) {
+  placeShip(player, shipQueue = [4, 3, 3, 2], invalidTiles = []) {
     //create a draggable ship
     this.drawBoard(player, true);
     const container = document.querySelector(".container");
@@ -106,43 +106,54 @@ class GameController {
       shipPart.classList.add("shipPart");
       shipToPlace.appendChild(shipPart);
     }
-    const rotateButton = document.createElement('button')
-    rotateButton.innerText = "rotate"
+    const rotateButton = document.createElement("button");
+    rotateButton.innerText = "rotate";
     //these are to prevent hitboxes spanning too many lanes / files
-    let hitboxFactorX = 0.85
-    let hitboxFactorY = 0.01
-    rotateButton.addEventListener('click',()=>{
-        let currentOrientation = window.getComputedStyle(shipToPlace).getPropertyValue("flex-direction")
-        console.log(currentOrientation)
-        if(currentOrientation === "row"){
-            shipToPlace.style.flexDirection = "column"
-            hitboxFactorX = 0.01
-            hitboxFactorY = 0.85
-        }
-        else{
-            shipToPlace.style.flexDirection = "row"
-            hitboxFactorX = 0.85
-            hitboxFactorY = 0.01
-        }
-    })
-    container.appendChild(rotateButton)
+    let hitboxFactorX = 0.85;
+    let hitboxFactorY = 0.01;
+    rotateButton.addEventListener("click", () => {
+      let currentOrientation = window
+        .getComputedStyle(shipToPlace)
+        .getPropertyValue("flex-direction");
+      console.log(currentOrientation);
+      if (currentOrientation === "row") {
+        shipToPlace.style.flexDirection = "column";
+        hitboxFactorX = 0.01;
+        hitboxFactorY = 0.85;
+      } else {
+        shipToPlace.style.flexDirection = "row";
+        hitboxFactorX = 0.85;
+        hitboxFactorY = 0.01;
+      }
+    });
+    container.appendChild(rotateButton);
     const tiles = document.querySelectorAll(".tile");
+    //mark tiles already containing a ship
 
-    function CalculateInvalid(nums){
-        const result = [...nums]
-        nums.forEach(element => {
-            result.push(element + 8)
-            result.push(element - 8)
-        });
-        //check if ship is on the left edge
-        if(nums[0] % 8 !== 0){
-            result.push(nums[0]-1)
-        }
-        //check if ship is on the right edge
-        if(nums[nums.length-1] % 8 !== 7){
-            result.push(nums[nums.length-1]+1)
-        }
-        return result
+    tiles.forEach((tile) => {
+      if (
+        player.gameboard.getAt(this.translateCoordinate(tile.value)) !==
+        undefined
+      ) {
+        tile.classList.add("placedShip");
+      }
+    });
+
+    function CalculateInvalid(nums) {
+      const result = [...nums];
+      nums.forEach((element) => {
+        result.push(element + 8);
+        result.push(element - 8);
+      });
+      //check if ship is on the left edge
+      if (nums[0] % 8 !== 0) {
+        result.push(nums[0] - 1);
+      }
+      //check if ship is on the right edge
+      if (nums[nums.length - 1] % 8 !== 7) {
+        result.push(nums[nums.length - 1] + 1);
+      }
+      return result;
     }
 
     //handle droping on tiles
@@ -153,32 +164,31 @@ class GameController {
       tile.addEventListener("drop", (e) => {
         e.preventDefault();
         const selected = document.querySelectorAll(".dragedOver");
-        const selectedTiles = []
-        const selectedNumbers = []
-        let validPosition = true
-        selected.forEach(tile => {
-            if(invalidTiles.includes(tile.value)){
-                validPosition = false
-            }
+        const selectedTiles = [];
+        const selectedNumbers = [];
+        let validPosition = true;
+        selected.forEach((tile) => {
+          if (invalidTiles.includes(tile.value)) {
+            validPosition = false;
+          }
         });
         if (selected.length === shipQueue[0] && validPosition) {
           shipToPlace.innerHTML = "";
-          selected.forEach(element => {
-            selectedNumbers.push(element.value)
-            element.classList.add('placedShip')
-            selectedTiles.push(this.translateCoordinate(element.value))
+          selected.forEach((element) => {
+            selectedNumbers.push(element.value);
+            element.classList.add("placedShip");
+            selectedTiles.push(this.translateCoordinate(element.value));
           });
-        const newInvalid = CalculateInvalid(selectedNumbers)
-        invalidTiles = invalidTiles.concat(newInvalid)
-          player.placeShip(selectedTiles)
-          shipQueue.shift()
-          rotateButton.innerHTML = ""
-          this.placeShip(player,shipQueue,invalidTiles)
-        }
-        else{
-            selected.forEach(element => {
-                element.classList.remove('dragedOver')
-            });
+          const newInvalid = CalculateInvalid(selectedNumbers);
+          invalidTiles = invalidTiles.concat(newInvalid);
+          player.placeShip(selectedTiles);
+          shipQueue.shift();
+          rotateButton.innerHTML = "";
+          this.placeShip(player, shipQueue, invalidTiles);
+        } else {
+          selected.forEach((element) => {
+            element.classList.remove("dragedOver");
+          });
         }
       });
     });
