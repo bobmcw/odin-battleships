@@ -94,14 +94,14 @@ class GameController {
       return cord
   }
   startGame() {}
-  placeShip(shipsLength,player) {
+  placeShip(player,shipQueue = [4,3,3,2]) {
     //create a draggable ship
     this.drawBoard(player, true);
     const container = document.querySelector(".container");
     const shipToPlace = document.createElement("div");
     shipToPlace.classList.add("ship");
     shipToPlace.setAttribute("draggable", true);
-    for (let i = 0; i < shipsLength; i++) {
+    for (let i = 0; i < shipQueue[0]; i++) {
       const shipPart = document.createElement("div");
       shipPart.classList.add("shipPart");
       shipToPlace.appendChild(shipPart);
@@ -138,7 +138,7 @@ class GameController {
         const selected = document.querySelectorAll(".dragedOver");
         console.log(selected);
         const selectedTiles = []
-        if (selected.length === shipsLength) {
+        if (selected.length === shipQueue[0]) {
           shipToPlace.innerHTML = "";
           selected.forEach(element => {
             element.classList.add('placedShip')
@@ -146,6 +146,9 @@ class GameController {
           });
           console.log(selectedTiles)
           player.placeShip(selectedTiles)
+          shipQueue.shift()
+          rotateButton.innerHTML = ""
+          this.placeShip(player,shipQueue)
         }
         else{
             selected.forEach(element => {
@@ -194,7 +197,7 @@ const player1 = new player("player1");
 //player1.placeShip(["a1", "a2", "a3"]);
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
-game.placeShip(3,game.player1);
+game.placeShip(game.player1);
 const pvp = document.querySelector("#pvp");
 pvp.addEventListener("click", () => {
   game.drawBoard(player1);
