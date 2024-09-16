@@ -18,6 +18,7 @@ class GameController {
     this.setupDone = false;
   }
   drawBoard(player, isForPlacing = false) {
+    let disableShoting = false;
     let spacesAlreadyShot;
     this.activePlayer === this.player1
       ? (spacesAlreadyShot = this.spacesAlreadyShotForPlayer1)
@@ -53,7 +54,7 @@ class GameController {
       }
       if (!isForPlacing) {
         tile.addEventListener("click", () => {
-          if (!spacesAlreadyShot.includes(cord)) {
+          if (!spacesAlreadyShot.includes(cord) && !disableShoting) {
             tile.innerHTML = circle;
             if (this.activePlayer.gameboard.reciveAttack(cord)) {
               console.log("hit");
@@ -66,6 +67,7 @@ class GameController {
                 }
               }
             } else {
+              disableShoting = true;
               spacesAlreadyShot.push(cord);
               setTimeout(() => {
                 this.switchPlayer();
