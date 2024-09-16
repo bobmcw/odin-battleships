@@ -195,7 +195,7 @@ class GameController {
           invalidTiles = invalidTiles.concat(newInvalid);
           player.placeShip(selectedTiles);
           shipQueue.shift();
-          rotateButton.innerHTML = "";
+          rotateButton.remove();
           this.placeShip(player, shipQueue, invalidTiles);
         } else {
           selected.forEach((element) => {
@@ -246,7 +246,8 @@ const player1 = new player("player1");
 const player2 = new player("player2");
 const game = new GameController(player1, player2);
 const pvp = document.querySelector("#pvp");
+const title = document.querySelector(".titleScreen");
 pvp.addEventListener("click", () => {
   game.placeShip(game.player1);
-  pvp.innerHTML = "";
+  title.remove();
 });
