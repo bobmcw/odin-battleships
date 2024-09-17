@@ -1,4 +1,4 @@
-import { player } from "./player.js";
+import { AI, player } from "./player.js";
 import { ship } from "./ship.js";
 import "./style.css";
 
@@ -18,7 +18,7 @@ class GameController {
     this.setupDone = false;
   }
   drawBoard(player, isForPlacing = false) {
-    let disableShoting = false;
+    let disableShoting = false
     let spacesAlreadyShot;
     this.activePlayer === this.player1
       ? (spacesAlreadyShot = this.spacesAlreadyShotForPlayer1)
@@ -67,7 +67,7 @@ class GameController {
                 }
               }
             } else {
-              disableShoting = true;
+                disableShoting = true
               spacesAlreadyShot.push(cord);
               setTimeout(() => {
                 this.switchPlayer();
@@ -99,6 +99,10 @@ class GameController {
   startGame() {}
   placeShip(player, shipQueue = [4, 3, 3, 2], invalidTiles = []) {
     if (shipQueue.length === 0) {
+        if(this.player2.name === "AI"){
+            this.drawBoard(this.player1)
+            return
+        }
       if (!this.setupDone) {
         this.switchPlayer();
         this.placeShip(this.player2);
@@ -246,10 +250,18 @@ class GameController {
 }
 const player1 = new player("player1");
 const player2 = new player("player2");
-const game = new GameController(player1, player2);
 const pvp = document.querySelector("#pvp");
 const title = document.querySelector(".titleScreen");
 pvp.addEventListener("click", () => {
+const game = new GameController(player1, player2);
   game.placeShip(game.player1);
   title.remove();
 });
+const pve = document.querySelector('#pve')
+pve.addEventListener("click",()=>{
+    const bot = new AI("AI")
+    const game = new GameController(player1,bot)
+    game.placeShip(game.player1)
+    title.remove()
+    console.log(bot.name)
+})

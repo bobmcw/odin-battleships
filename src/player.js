@@ -13,7 +13,8 @@ export class player {
   }
 }
 export class AI extends player {
-  constructor() {
-    super();
+  constructor(name) {
+    super(name);
   }
+  
 }
