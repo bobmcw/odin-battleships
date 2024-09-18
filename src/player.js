@@ -81,7 +81,6 @@ export class AI extends player {
         }
       }
     }
-    console.log(orientation);
     let invalid = false
     coordNums.forEach((element) => {
       if (this.invalidSpaces.includes(element)) {
@@ -94,7 +93,6 @@ export class AI extends player {
     else{
     const newInvalid = this.CalculateInvalid(coordNums);
     this.invalidSpaces = this.invalidSpaces.concat(newInvalid);
-    console.log(this.invalidSpaces)
     return coords;
     }
   }
