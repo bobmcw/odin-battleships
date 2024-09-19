@@ -85,9 +85,22 @@ class GameController {
   AIturn(){
     const space = this.player2.shootRandomSpace()
     const spaceCoord = this.translateCoordinate(space)
+    setTimeout(() => {  
     this.activePlayer.gameboard.reciveAttack(spaceCoord)
-    console.log(this.activePlayer)
-    console.log(this.activePlayer.gameboard)
+    const spaceStr = space.toString()
+    const tiles = document.querySelectorAll('.tile')
+    tiles.forEach(element => {
+      if(element.value === space){
+        if(this.activePlayer.gameboard.getAt(spaceCoord) === undefined){
+          element.innerHTML = circle
+        }
+        else{
+        element.innerHTML = cross
+        }
+      }
+    });
+    this.spacesAlreadyShotForPlayer1.push(spaceCoord)
+    }, 1000);
     setTimeout(() => {
      this.switchPlayer() 
      this.drawBoard(this.activePlayer)
