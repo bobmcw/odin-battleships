@@ -101,7 +101,7 @@ export class AI extends player {
     }
   }
   shootRandomSpace(){
-    const space = this.randomInt(this.availableSpaces.length)
+    const space = this.availableSpaces[this.randomInt(this.availableSpaces.length-1)]
     const index = this.availableSpaces.indexOf(space)
     this.availableSpaces.splice(index,1)
     return space

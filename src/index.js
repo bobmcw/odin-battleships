@@ -86,10 +86,12 @@ class GameController {
     const space = this.player2.shootRandomSpace()
     const spaceCoord = this.translateCoordinate(space)
     this.activePlayer.gameboard.reciveAttack(spaceCoord)
+    console.log(this.activePlayer)
+    console.log(this.activePlayer.gameboard)
     setTimeout(() => {
      this.switchPlayer() 
      this.drawBoard(this.activePlayer)
-    }, 1000);
+    }, 2000);
   }
   switchPlayer() {
     //active player means which player's board is currently being displayed and therefore attacked.
