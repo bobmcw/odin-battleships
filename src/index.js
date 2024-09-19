@@ -54,6 +54,7 @@ class GameController {
       }
       if (!isForPlacing) {
         tile.addEventListener("click", () => {
+          if(this.activePlayer === this.player1 && this.player2.name === "AI"){disableShoting = true}
           if (!spacesAlreadyShot.includes(cord) && !disableShoting) {
             tile.innerHTML = circle;
             if (this.activePlayer.gameboard.reciveAttack(cord)) {
