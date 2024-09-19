@@ -41,7 +41,7 @@ class GameController {
       tile.value = coordinate;
       coordinate += 1;
       tile.classList.add("tile");
-      tile.innerText = space;
+      //tile.innerText = space;
       let cord = "";
       cord += dict[tile.value % 8];
       cord += Math.trunc(tile.value / 8) + 1;
@@ -58,12 +58,11 @@ class GameController {
           if (!spacesAlreadyShot.includes(cord) && !disableShoting) {
             tile.innerHTML = circle;
             if (this.activePlayer.gameboard.reciveAttack(cord)) {
-              console.log("hit");
               spacesAlreadyShot.push(cord);
               tile.innerHTML = cross;
               if (this.activePlayer.gameboard.getAt(cord).isSunk()) {
-                console.log("sunk");
                 if (this.activePlayer.gameboard.areAllShipsSunken()) {
+                  this.switchPlayer()
                   alert(`${this.activePlayer.name} won!`);
                 }
               }
@@ -162,7 +161,6 @@ class GameController {
       let currentOrientation = window
         .getComputedStyle(shipToPlace)
         .getPropertyValue("flex-direction");
-      console.log(currentOrientation);
       if (currentOrientation === "row") {
         shipToPlace.style.flexDirection = "column";
         hitboxFactorX = 0.01;
