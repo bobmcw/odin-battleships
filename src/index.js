@@ -81,13 +81,25 @@ class GameController {
       boardContainer.appendChild(tile);
     });
   }
+  AIturn(){
+    const space = this.player2.shootRandomSpace()
+    const spaceCoord = this.translateCoordinate(space)
+    this.activePlayer.gameboard.reciveAttack(spaceCoord)
+    setTimeout(() => {
+     this.switchPlayer() 
+     this.drawBoard(this.activePlayer)
+    }, 1000);
+  }
   switchPlayer() {
-    //active player means which player's board is currently being displayed and therefor attacked.
+    //active player means which player's board is currently being displayed and therefore attacked.
     this.activePlayer === this.player1
       ? (this.activePlayer = this.player2)
       : (this.activePlayer = this.player1);
     const header = document.querySelector(".header");
     header.innerText = `${this.activePlayer.name}'s board`;
+    if(this.activePlayer.name !== "AI" && this.player2.name === "AI"){
+      this.AIturn()
+    }
   }
   translateCoordinate(number) {
     const dict = ["a", "b", "c", "d", "e", "f", "g", "h"];
@@ -100,7 +112,8 @@ class GameController {
   placeShip(player, shipQueue = [4, 3, 3, 2], invalidTiles = []) {
     if (shipQueue.length === 0) {
         if(this.player2.name === "AI"){
-            this.drawBoard(this.player1)
+          this.switchPlayer()
+            this.drawBoard(this.activePlayer)
             return
         }
       if (!this.setupDone) {

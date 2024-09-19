@@ -16,6 +16,10 @@ export class AI extends player {
   constructor(name) {
     super(name);
     this.invalidSpaces = [];
+    this.availableSpaces = []
+    for(let i=0;i<64;i++){
+      this.availableSpaces.push(i)
+    }
   }
   randomInt(max) {
     return Math.floor(Math.random() * max);
@@ -95,5 +99,11 @@ export class AI extends player {
     this.invalidSpaces = this.invalidSpaces.concat(newInvalid);
     return coords;
     }
+  }
+  shootRandomSpace(){
+    const space = this.randomInt(this.availableSpaces.length)
+    const index = this.availableSpaces.indexOf(space)
+    this.availableSpaces.splice(index,1)
+    return space
   }
 }
